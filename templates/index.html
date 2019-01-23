@@ -13,25 +13,36 @@
 
 <!-- Will need a nav bar to select between rooms. Will have to have this to the left of the screen-->
 <!-- When first logged in send everyone to the landing room. Make this locked but have instructions on making and joining rooms-->
-
 <div>
-  The White Lodge:
-  <ul id="messages">
+  <form id="login">
+    <div class="form-group">
+        <input id="username" autocomplete="off" autofocus class="form-control" placeholder="username" type="text" required/>
+    </div>
+    <button class="btn btn-secondary" id="submitname" type="submit">Submit</button>
+  </form>
+</div>
+
+<div id="rooms">
+  The White Lodge Rooms:
+  <ul id="roomlist">
+  </ul>
+  <hr>
+</div>
+
+
+<div id="messages">
+  The White Lodge Messaging:
+  <ul id="messageslist">
   </ul>
   <hr>
 </div>
 
 <div>
   <form id="message">
-      <div id="main">
-          <div class="form-group">
-              <input id="username" autocomplete="off" autofocus class="form-control" placeholder="username" type="text" required/>
-          </div>
-          <div class="form-group">
-              <input id="posttext" autocomplete="off" autofocus class="form-control" placeholder="..." type="text" required/>
-          </div>
-          <button class="btn btn-secondary" id="submitpost" type="submit">Post</button>
-      </div>
+    <div class="form-group">
+        <input id="posttext" autocomplete="off" autofocus class="form-control" placeholder="..." type="text" required/>
+    </div>
+    <button class="btn btn-secondary" id="submitpost" type="submit">Post</button>
   </form>
 </div>
 
