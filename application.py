@@ -9,8 +9,8 @@ from sqlalchemy.orm import scoped_session, sessionmaker
 from flask_sqlalchemy import SQLAlchemy
 
 # Imports the classes from models.py
-from models import *
-db.create_all()
+#from models import *
+#db.create_all()
 
 app = Flask(__name__)
 
@@ -23,7 +23,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres://yvmypvesmwtmzo:e9224998c3a09
 app.config['SQLAlCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 db.init_app(app)
-engine = create_engine(usr:pass@)
+engine = create_engine(os.getenv("DATABASE_URL"))
 db = scoped_session(sessionmaker(bind=engine))
 
 # Check for environment variable
