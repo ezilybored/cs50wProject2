@@ -9,8 +9,8 @@ from sqlalchemy.orm import scoped_session, sessionmaker
 from flask_sqlalchemy import SQLAlchemy
 
 # Imports the classes from models.py
-#from models import *
-#db.create_all()
+from models import *
+db.create_all()
 
 app = Flask(__name__)
 
