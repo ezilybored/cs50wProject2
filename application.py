@@ -35,20 +35,20 @@ Session(app)
 # Object class setup
 class Message(db.Model):
     __tablename__ = "messages"
-    message_id = db.Column(db.Integer, primary_key=True)
-    room_id = db.Column(db.String, db.ForeignKey("rooms.room_id"), nullable=False)
+    messageid = db.Column(db.Integer, primary_key=True)
+    roomid = db.Column(db.String, db.ForeignKey("rooms.room_id"), nullable=False)
     message = db.Column(db.String, nullable=False
-    user_id = db.Column(db.Integer, db.ForeignKey("users.user_id"), nullable=False)
+    userid = db.Column(db.Integer, db.ForeignKey("users.user_id"), nullable=False)
 
 class Room(db.Model):
     __tablename__ = "rooms"
-    room_id = db.Column(db.String, primary_key=True)
-    room_name = db.Column(db.String, nullable=False)
+    roomid = db.Column(db.String, primary_key=True)
+    roomname = db.Column(db.String, nullable=False)
 
 class User(db.Model):
     __tablename__ = "users"
-    user_id = db.Column(db.Integer, primary_key=True)
-    user_name = db.Column(db.String, nullable=False)
+    userid = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String, nullable=False)
 
 # Server routes
 @app.route("/")
