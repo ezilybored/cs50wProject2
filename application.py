@@ -7,7 +7,7 @@ from flask_session import Session
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
 from flask_sqlalchemy import SQLAlchemy
-from flask_heroku import Heroku
+#from flask_heroku import Heroku
 
 # Imports the classes from models.py
 #from models import *
@@ -20,9 +20,9 @@ app.config["SECRET_KEY"] = os.getenv("SECRET_KEY")
 socketio = SocketIO(app, manage_session=False) # manage_session=False hands the session handling to flask
 
 # Database setup
-#app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres://yvmypvesmwtmzo:e9224998c3a09576fd8640942a82428f33415c6e36a2e49c6b91e9d91b9e037d@ec2-54-75-230-41.eu-west-1.compute.amazonaws.com:5432/db53552ukasjon'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres://yvmypvesmwtmzo:e9224998c3a09576fd8640942a82428f33415c6e36a2e49c6b91e9d91b9e037d@ec2-54-75-230-41.eu-west-1.compute.amazonaws.com:5432/db53552ukasjon'
 #app.config['SQLAlCHEMY_TRACK_MODIFICATIONS'] = False
-heroku = Heroku(app)
+#heroku = Heroku(app)
 db = SQLAlchemy(app)
 
 
@@ -31,6 +31,24 @@ db = SQLAlchemy(app)
 app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
+
+# Object class setup
+class Message(db.Model):
+    __tablename__ = "messages"
+    message_id = db.Column(db.Integer, primary_key=True)
+    room_id = db.Column(db.String, db.ForeignKey("rooms.room_id"), nullable=False)
+    message = db.Column(db.String, nullable=False
+    user_id = db.Column(db.Integer, db.ForeignKey("users.user_id"), nullable=False)
+
+class Room(db.Model):
+    __tablename__ = "rooms"
+    room_id = db.Column(db.String, primary_key=True)
+    room_name = db.Column(db.String, nullable=False)
+
+class User(db.Model):
+    __tablename__ = "users"
+    user_id = db.Column(db.Integer, primary_key=True)
+    user_name = db.Column(db.String, nullable=False)
 
 # Server routes
 @app.route("/")
