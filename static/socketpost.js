@@ -68,6 +68,17 @@ document.addEventListener('DOMContentLoaded', () => {
       element.value = '';
   };
 
+  // Posting a new room to the server
+  document.getElementById('submitroom').onclick = (e) => {
+      e.preventDefault()
+
+      const newroom = document.getElementById('newroom').value;
+      socket.emit('submit room', {'room': newroom});
+
+      const element = document.getElementById('newroom');
+      element.value = '';
+  };
+
   // Recieving a message from the server
   socket.on('announce message', data => {
     const li = document.createElement('li');
@@ -100,5 +111,12 @@ document.addEventListener('DOMContentLoaded', () => {
       // Hide the following
       document.querySelector("#login").style.display = "none";
     }
+  })
+
+  // Recieving new room from the server
+  socket.on('verify room', data => {
+    const li = document.createElement('li');
+    li.innerHTML = `${data.roomname}`;
+    document.getElementById('roomlist').append(li);
   })
 });

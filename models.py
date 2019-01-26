@@ -7,7 +7,7 @@ class Message(db.Model):
     __tablename__ = "messages"
     message_id = db.Column(db.Integer, primary_key=True)
     room_id = db.Column(db.String, db.ForeignKey("rooms.room_id"), nullable=False)
-    message = db.Column(db.String, nullable=False
+    message = db.Column(db.String, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey("users.user_id"), nullable=False)
 
 class Room(db.Model):

@@ -24,9 +24,20 @@
 
 <div id="rooms">
   The White Lodge Rooms:
-  <ul id="roomlist">
-  </ul>
+  <br> Select a room to enter, or create a new room.
+  <div id="roomlist_section">
+    <ul id="roomlist">
+    </ul>
+  </div>
+  <div id="createroom_section">
+    <form id="createroom">
+      <div class="form-group">
+        <input id="newroom" autocomplete="off" placeholder="New room name" type="text"/>
+      </div>
+      <button class="btn btn-secondary" id="submitroom" type="submit">Submit</button>
+  </div>
   <hr>
+
 </div>
 
 
@@ -37,8 +48,9 @@
   <hr>
 </div>
 
-<div>
-  <form id="message">
+<div id="message">
+  <h3></h3>
+  <form id="create_message">
     <div class="form-group">
         <input id="posttext" autocomplete="off" autofocus class="form-control" placeholder="..." type="text" required/>
     </div>
