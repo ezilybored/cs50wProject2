@@ -26,30 +26,34 @@
   The White Lodge Rooms:
   <br> Select a room to enter, or create a new room.
   <div id="roomlist_section">
-    <ul id="roomlist">
-    </ul>
-  </div>
-  <div id="createroom_section">
-    <form id="createroom">
+    <form id="selectroom">
       <div class="form-group">
-        <input id="newroom" autocomplete="off" placeholder="New room name" type="text"/>
+        <select class="form-control" id="roomlist">
+          <!-- Options are inserted here by socketpost.js-->
+          <option>Please select a room</option>
+        </select>
+        <button class="btn btn-secondary" id="chooseroom" type="submit">Submit</button>
       </div>
-      <button class="btn btn-secondary" id="submitroom" type="submit">Submit</button>
+    </form>
   </div>
-  <hr>
 
+  <div id="createroom_section">
+      <input id="newroom" autocomplete="off" placeholder="New room name" type="text"/>
+      <button class="btn btn-secondary" id="submitroom">Submit</button>
+  <hr>
+  </div>
+  <div id="room_error"></div>
 </div>
 
 
 <div id="messages">
-  The White Lodge Messaging:
+  The White Lodge Messaging: <div id="roomname"></div> <div id="displayname"></div>
   <ul id="messageslist">
+
   </ul>
-  <hr>
 </div>
 
 <div id="message">
-  <h3></h3>
   <form id="create_message">
     <div class="form-group">
         <input id="posttext" autocomplete="off" autofocus class="form-control" placeholder="..." type="text" required/>

@@ -7,6 +7,7 @@ from flask_session import Session
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
 from flask_sqlalchemy import SQLAlchemy
+import json
 
 app = Flask(__name__)
 
@@ -28,6 +29,7 @@ class User(db.Model):
     __tablename__ = "users"
     user_id = db.Column(db.Integer, primary_key=True)
     user_name = db.Column(db.String, nullable=False)
+    user_link = db.relationship('Message', backref='user_message')
 
 class Room(db.Model):
     __tablename__ = "rooms"
@@ -40,6 +42,7 @@ class Message(db.Model):
     room_id = db.Column(db.Integer, db.ForeignKey("rooms.room_id"), nullable=False)
     message = db.Column(db.String, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey("users.user_id"), nullable=False)
+    timestamp = db.Column(db.DateTime(timezone=True) , nullable=False)
 
 
 # Server routes
@@ -47,13 +50,12 @@ class Message(db.Model):
 def index():
     return render_template("index.html")
 
+# When the user enters a username
 @socketio.on("submit username")
-def message(data):
+def submit_username(data):
     user = data["username"]
-    # Checks for the input name in the databse.
     indatabase = User.query.filter_by(user_name=user).all()
 
-    # If not in database, adds the user
     if not indatabase:
         user_entry = User(user_name=user)
         db.session.add(user_entry)
@@ -63,30 +65,96 @@ def message(data):
     else:
         emit("verify user", {"username": user}, broadcast=True)
 
+# Fetching the list of rooms in the databse
+@socketio.on("room_list")
+def room_list():
+    print("getting list")
+    roomlist = Room.query.all()
+    list = []
+    for room in roomlist:
+        list.append(room.room_name)
+    emit("list_of_rooms", {"list": list}, broadcast=True)
+
+# When the user creates a new room
 @socketio.on("submit room")
-def message(data):
+def submit_room(data):
     newroom = data["room"]
-    # Checks for the input name in the databse.
     indatabase = Room.query.filter_by(room_name=newroom).all()
 
-    # If not in database, adds the room
     if not indatabase:
         room_entry = Room(room_name=newroom)
         db.session.add(room_entry)
         db.session.commit()
-        emit("verify room", {"roomname": newroom}, broadcast=True)
+        data = Room.query.filter_by(room_name=newroom).all()
+        room = data[0].room_name
+        id = data[0].room_id
+        emit("verify room", {"success": True, "roomid": id, "roomname": room}, broadcast=True)
 
     else:
         # Send back an error message that the room already exists
-        #emit("verify room", {"roomname": newroom}, broadcast=True)
-        return error
+        emit("verify room", {"success": False}, broadcast=True)
+
+# When the user selects a current room
+@socketio.on("choose_room")
+def choose_room(data):
+    selectedroom = data["room"]
+    print("room = ", selectedroom)
+    indatabase = Room.query.filter_by(room_name=selectedroom).all()
+    id = indatabase[0].room_id
+
+    if id:
+        # This code gives all of the returned values from both tables
+        """
+        messages = db.session.query(User, Message).outerjoin(Message, User.user_id == Message.user_id).all()
+        print(messages)
+        # Need to filter by room and limit to 100 messages
+        messagelist = []
+        for message in messages:
+            if message[1]:
+                print(message)
+                print(message[0].user_name)
+                print(message[1].message)
+                messagedict = {}
+                messagedict["roomname"] = data["room"]
+                messagedict["message"] = message[1].message
+                messagedict["username"] = message[0].user_name
+                messagelist.append(messagedict)
+        print(messagelist)
+
+        """
+        
+        # To get just one column from each
+        messages = db.session.query(User.user_name, Message.message, Message.timestamp).outerjoin(Message, User.user_id == Message.user_id).filter_by(room_id=id).limit(100)
+        print(messages)
+        messagelist = []
+        for message in messages:
+            if message[1]:
+                messagedict = {}
+                messagedict["roomname"] = data["room"]
+                messagedict["message"] = message[1]
+                messagedict["username"] = message[0]
+                messagedict["username"] = message[2]
+                messagelist.append(messagedict)
+        print(messagelist)
+
+        jsonmessage = json.dumps(messagelist)
+
+        # Returns the room data and the last 100 messages to be posted in that room
+        emit("room_choice", {"success": True, "roomname": selectedroom, "message": jsonmessage}, broadcast=True)
 
 @socketio.on("submit message")
-def message(data):
+def submit_message(data):
     message = data["message"]
-    user = data["username"]
-    # Will need to also recieve and return the timestamp from the browsersxs
-    emit("announce message", {"message": message, "username": user}, broadcast=True)
+    userpost = data["username"]
+    userdata = User.query.filter_by(user_name=userpost).all()
+    user = userdata[0].user_id
+    room = data["roomdata"]
+    roomdata = Room.query.filter_by(room_name=room).all()
+    roomid = roomdata[0].room_id
+    messagetime = data["timestamp"]
 
-# Need to handle creating new rooms. The message needs to be sent to the server. A new table needs to be made to hold the
-# messages and then the index page needs to be updated to show the new room.
+    add_message = Message(room_id=roomid, message=message, user_id=user, timestamp=messagetime)
+    db.session.add(add_message)
+    db.session.commit()
+
+    emit("announce message", {"message": message, "username": userpost, "roomname": room, "timestamp": messagetime}, broadcast=True)
