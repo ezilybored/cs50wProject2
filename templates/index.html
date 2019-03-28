@@ -6,60 +6,70 @@
 
 {% block main %}
 <script src="{{ url_for('static', filename='socketpost.js') }}"></script>
-
-<!-- Will need some kind of if statement here to check if there is a session signed in or not.
-     also will need to check for user in local storage.
-     If the user is not logged in then a log in screen will need to be shown-->
-
-<!-- Will need a nav bar to select between rooms. Will have to have this to the left of the screen-->
-<!-- When first logged in send everyone to the landing room. Make this locked but have instructions on making and joining rooms-->
-<div>
-  <form id="login">
-    <div class="form-group">
-        <input id="username" autocomplete="off" autofocus class="form-control" placeholder="username" type="text" required/>
-    </div>
-    <button class="btn btn-secondary" id="submitname" type="submit">Submit</button>
-  </form>
-</div>
-
-<div id="rooms">
-  The White Lodge Rooms:
-  <br> Select a room to enter, or create a new room.
-  <div id="roomlist_section">
-    <form id="selectroom">
-      <div class="form-group">
-        <select class="form-control" id="roomlist">
-          <!-- Options are inserted here by socketpost.js-->
-          <option>Please select a room</option>
-        </select>
-        <button class="btn btn-secondary" id="chooseroom" type="submit">Submit</button>
+<div class="wrapper">
+  <div class="loginbox">
+    <div id="heading"> The White Lodge Chat Rooms. </div>
+    <form id="login">
+        <label for="username">Enter your username</label>
+        <div>
+          <input id="username" autocomplete="off" autofocus class="form-control" placeholder="username" type="text" required/>
+        </div>
+      <div>
+          <button class="btn btn-secondary" id="submitname" type="submit">Submit</button>
       </div>
+    </form>
+    <img id ="loginimage" src="static/images/undraw_interaction_design_odgc.svg" alt="Login page image">
+  </div>
+
+  <div class="rooms">
+    <nav class="navbar navbar-light navbar-expand-lg fixed-top">
+      <a href="#" class="navbar-brand">The White Lodge Chat Rooms <div id="roomname"> Please select a room </div></a>
+      <button class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+          <ul class="navbar-nav ml-auto">
+            <li class="navbar-item">
+              <form id="selectroom" class="form-inline my-2">
+                    <select class="form-control mr-2" id="roomlist">
+                      <!-- Options are inserted here by socketpost.js-->
+                      <option>Please select a room</option>
+                    </select>
+                  <button id="chooseroom" class="btn btn-secondary mr-2" type="submit">Submit</button>
+              </form>
+            </li>
+            <li class="navbar-item">
+              <div class="createroom">
+                <form id="roomcreate" class="form-inline my-2">
+                      <input id="newroom" autocomplete="off" class="form-control mr-2" placeholder="Create a new room" type="text"/>
+                      <button id="submitroom" class="btn btn-secondary mr-2">Submit</button>
+                </form>
+              </div>
+            </li>
+            <li class="navbar-item my-2">
+              <button id="logout" class="btn btn-secondary mr-2" type="submit">Logout</button>
+            <li>
+          </ul>
+        </div>
+    </nav>
+  </div>
+
+
+  <div class="messages">
+    <ul id="messageslist">
+
+    </ul>
+  </div>
+
+  <div class="message">
+    <form class="create_message">
+        <input id="posttext" autocomplete="off" autofocus data-emojiable="true" placeholder="..." type="text" required/>
+        <button class="btn btn-secondary" id="submitpost" type="submit">
+          <i class="fas fa-paper-plane"></i>
+        </button>
     </form>
   </div>
 
-  <div id="createroom_section">
-      <input id="newroom" autocomplete="off" placeholder="New room name" type="text"/>
-      <button class="btn btn-secondary" id="submitroom">Submit</button>
-  <hr>
-  </div>
-  <div id="room_error"></div>
-</div>
-
-
-<div id="messages">
-  The White Lodge Messaging: <div id="roomname"></div> <div id="displayname"></div>
-  <ul id="messageslist">
-
-  </ul>
-</div>
-
-<div id="message">
-  <form id="create_message">
-    <div class="form-group">
-        <input id="posttext" autocomplete="off" autofocus class="form-control" placeholder="..." type="text" required/>
-    </div>
-    <button class="btn btn-secondary" id="submitpost" type="submit">Post</button>
-  </form>
 </div>
 
 {% endblock %}

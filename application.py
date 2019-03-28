@@ -42,7 +42,7 @@ class Message(db.Model):
     room_id = db.Column(db.Integer, db.ForeignKey("rooms.room_id"), nullable=False)
     message = db.Column(db.String, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey("users.user_id"), nullable=False)
-    timestamp = db.Column(db.DateTime(timezone=True) , nullable=False)
+    timestamp = db.Column(db.String, nullable=False)
 
 
 # Server routes
@@ -68,7 +68,6 @@ def submit_username(data):
 # Fetching the list of rooms in the databse
 @socketio.on("room_list")
 def room_list():
-    print("getting list")
     roomlist = Room.query.all()
     list = []
     for room in roomlist:
@@ -122,10 +121,9 @@ def choose_room(data):
         print(messagelist)
 
         """
-        
+
         # To get just one column from each
-        messages = db.session.query(User.user_name, Message.message, Message.timestamp).outerjoin(Message, User.user_id == Message.user_id).filter_by(room_id=id).limit(100)
-        print(messages)
+        messages = db.session.query(User.user_name, Message.message, Message.timestamp).outerjoin(Message, User.user_id == Message.user_id).filter_by(room_id=id).order_by(Message.message_id).limit(100)
         messagelist = []
         for message in messages:
             if message[1]:
@@ -133,14 +131,14 @@ def choose_room(data):
                 messagedict["roomname"] = data["room"]
                 messagedict["message"] = message[1]
                 messagedict["username"] = message[0]
-                messagedict["username"] = message[2]
+                messagedict["timestamp"] = message[2]
                 messagelist.append(messagedict)
-        print(messagelist)
-
         jsonmessage = json.dumps(messagelist)
 
         # Returns the room data and the last 100 messages to be posted in that room
         emit("room_choice", {"success": True, "roomname": selectedroom, "message": jsonmessage}, broadcast=True)
+        print("100 messages sent")
+        print(jsonmessage)
 
 @socketio.on("submit message")
 def submit_message(data):

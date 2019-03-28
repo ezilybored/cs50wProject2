@@ -1,0 +1,4 @@
+blue purpleish colour = #6C63FF
+orangey colour = #E8630C
+deep purple = #BC0CE8
+Yellow colour = #FFBE0D

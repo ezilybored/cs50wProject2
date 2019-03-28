@@ -1,0 +1,70 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    The White Lodge
+{% endblock %}
+
+{% block main %}
+<script src="{{ url_for('static', filename='socketpost.js') }}"></script>
+<div class="wrapper">
+  <div class="loginbox container">
+    <form id="login">
+      <div class="form-group row">
+        <label class="col-sm-9 col-form-label" for="username">Enter your username</label>
+        <div class="col-sm-9">
+          <input id="username" autocomplete="off" autofocus class="form-control" placeholder="username" type="text" required/>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-9">
+          <button class="btn btn-secondary" id="submitname" type="submit">Submit</button>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <nav class="navbar navbar-light bg-light">
+    <a href="#" class="navbar-brand">The White Lodge Chat Rooms</a>
+    <ul class="navbar-nav">
+      <li>
+
+      </li>
+    </ul>
+  </nav>
+
+  <div class="rooms">
+    <div class="header"><h2>The White Lodge Rooms: Select a room to enter, or create a new room.</h2></div>
+    <div class="roomselect">
+      <form id="selectroom">
+        <select class="form-control" id="roomlist">
+          <!-- Options are inserted here by socketpost.js-->
+          <option>Please select a room.</option>
+        </select>
+        <button id="chooseroom" class="btn btn-secondary btn-block" type="submit">Submit</button>
+      </form>
+    </div>
+
+    <div class="createroom">
+        <input id="newroom" autocomplete="off" class="form-control" placeholder="Type here to create a new room" type="text"/>
+        <button id="submitroom" class="btn btn-secondary btn-block">Submit</button>
+    </div>
+  </div>
+
+  <div class="messaging">
+    <div class="messages">
+      The White Lodge Messaging: <div id="roomname"></div> <div id="displayname"></div>
+      <ul id="messageslist">
+
+      </ul>
+    </div>
+
+    <div class="message">
+      <form id="create_message">
+        <input id="posttext" autocomplete="off" autofocus class="form-control" placeholder="..." type="text" required/>
+        <button class="btn btn-secondary" id="submitpost" type="submit">Post</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

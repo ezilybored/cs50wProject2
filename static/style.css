@@ -1,0 +1,139 @@
+html, body {
+  height: 100vh;
+  width: 100vw;
+  margin: 0;
+  padding: 0;
+}
+
+.wrapper {
+  background: #6C63FF;
+  height: 100vh;
+  width: 100vw;
+  display: grid;
+  grid-template-rows: 10% 80% 10%;
+  grid-template-columns: 1fr 4fr 1fr;
+}
+
+.loginbox {
+  background: #F9F9F9;
+  height: 100%;
+  width: 100%;
+  border-radius: 5px;
+  grid-row: 2 / 3;
+  grid-column: 2 / 3;
+  display: grid;
+  grid-template-rows: 20% 20% 20% 20% 20%;
+  grid-template-columns: 50% 50%;
+
+}
+
+#heading {
+  grid-column: 1 / 3;
+  grid-row: 1 / 2;
+  margin-left: 5%;
+  margin-top: 10%;
+}
+
+#login {
+  height: 90%;
+  width: 80%;
+  grid-row: 2/ 5;
+  grid-column: 1 / 2;
+  margin-left: 10%;
+  margin-top: 10%;
+}
+
+#loginimage {
+  height: 90%;
+  width: 90%;
+  grid-row: 2 / 5;
+  grid-column: 2 / 3;
+  margin-top: 10%;
+}
+
+#username {
+  margin-top: 5px;
+  margin-bottom: 10px;
+}
+
+@media only screen and (max-width : 768px) {
+  #login {
+    grid-row: 4 / 6;
+    grid-column: 1 / 3;
+  }
+
+  #loginimage {
+    grid-row: 2 / 4;
+    grid-column: 1 / 3;
+  }
+  #username {
+    margin-top: 5px;
+    margin-bottom: 5px;
+  }
+}
+
+.navbar {
+  background: #F9F9F9;
+  margin: 0;
+  border-bottom: solid black 1px;
+}
+
+.rooms {
+  margin: 0;
+  grid-row: 1 / 2;
+  grid-column: 1 / 4;
+}
+
+.messages > ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+#messageslist > li {
+  background: linear-gradient(to top, #BC0CE8, #BC57E8);
+  border: solid black 1px;
+  border-radius: 5px;
+  width: auto;
+  max-width: 70%;
+  margin-bottom: 3%;
+  padding: 1%;
+  box-shadow: 3px 5px #534CC4;
+}
+
+.messages {
+  background: #6C63FF;
+  overflow-y: scroll;
+  grid-column: 1 / 4;
+  grid-row: 2 / 3;
+  padding: 3%;
+  margin: 0;
+  border-top: solid black 1px;
+}
+
+.message {
+  background: #F9F9F9;
+  grid-column: 1 / 4;
+  grid-row: 3 / 4;
+  grid-template-columns: 1fr;
+  margin: 0;
+  border-top: solid black 1px;
+}
+
+.create_message {
+  grid-column: 1 / 2;
+  padding: 2%;
+  display: grid;
+  grid-template-columns: 10% 75% 15%;
+}
+
+#posttext {
+  grid-column: 1 / 3;
+  margin-right: 2%;
+  border-radius: 5px;
+  padding-left: 5px;
+}
+
+#submitbutton {
+  grid-column: 3 / 4;
+}
