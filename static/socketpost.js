@@ -47,27 +47,27 @@ document.addEventListener("DOMContentLoaded", () => {
 
       socket.emit("choose_room", { room: storedRoom, user: storedName });
     }
+
+    // When the user chooses a username on the login screen
+    document.getElementById("submitname").onclick = e => {
+      e.preventDefault();
+      const user = document.getElementById("username").value;
+      localStorage.setItem("username", user);
+      //socket.emit("submit username", { username: user });
+      rooms.style.display = "block";
+      messages.style.display = "block";
+      message.style.display = "flex";
+      login.style.display = "none";
+      var roomhtml = document.getElementById("roomname");
+      roomhtml.innerHTML = `Please select a room`;
+      var list = document.getElementById("messageslist");
+      list = [];
+      socket.emit("room_list");
+
+      const element = document.getElementById("username");
+      element.value = "";
+    };
   });
-
-  // When the user chooses a username on the login screen
-  document.getElementById("submitname").onclick = e => {
-    e.preventDefault();
-    const user = document.getElementById("username").value;
-    localStorage.setItem("username", user);
-    //socket.emit("submit username", { username: user });
-    rooms.style.display = "block";
-    messages.style.display = "block";
-    message.style.display = "flex";
-    login.style.display = "none";
-    var roomhtml = document.getElementById("roomname");
-    roomhtml.innerHTML = `Please select a room`;
-    var list = document.getElementById("messageslist");
-    list = [];
-    socket.emit("room_list");
-
-    const element = document.getElementById("username");
-    element.value = "";
-  };
 
   // When the list of rooms is returned. This populates the drop down menu
   socket.on("list_of_rooms", data => {
