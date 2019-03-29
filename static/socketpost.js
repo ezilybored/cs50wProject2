@@ -3,7 +3,9 @@ document.addEventListener("DOMContentLoaded", () => {
   //localStorage.setItem("currentroom", "");
 
   var socket = io.connect(
-    location.protocol + "//" + document.domain + ":" + location.port
+    //location.protocol + "//" + document.domain + ":" + location.port
+    var socket = io.connect('https://thewhitelodge.herokuapp.com/');
+
   );
 
   let storedName = localStorage.getItem("username");
