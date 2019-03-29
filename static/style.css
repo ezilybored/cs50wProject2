@@ -1,21 +1,24 @@
-html, body {
+html,
+body {
   height: 100vh;
   width: 100vw;
   margin: 0;
   padding: 0;
+  font-size: 1.1em;
+  font-family: "Roboto", sans-serif;
 }
 
 .wrapper {
-  background: #6C63FF;
+  background: #6c63ff;
   height: 100vh;
   width: 100vw;
   display: grid;
-  grid-template-rows: 10% 80% 10%;
+  grid-template-rows: 1fr 16fr 1fr;
   grid-template-columns: 1fr 4fr 1fr;
 }
 
 .loginbox {
-  background: #F9F9F9;
+  background: #f9f9f9;
   height: 100%;
   width: 100%;
   border-radius: 5px;
@@ -24,7 +27,6 @@ html, body {
   display: grid;
   grid-template-rows: 20% 20% 20% 20% 20%;
   grid-template-columns: 50% 50%;
-
 }
 
 #heading {
@@ -56,7 +58,7 @@ html, body {
   margin-bottom: 10px;
 }
 
-@media only screen and (max-width : 768px) {
+@media only screen and (max-width: 768px) {
   #login {
     grid-row: 4 / 6;
     grid-column: 1 / 3;
@@ -70,10 +72,13 @@ html, body {
     margin-top: 5px;
     margin-bottom: 5px;
   }
+  body {
+    font-size: 1em;
+  }
 }
 
 .navbar {
-  background: #F9F9F9;
+  background: #f9f9f9;
   margin: 0;
   border-bottom: solid black 1px;
 }
@@ -87,22 +92,22 @@ html, body {
 .messages > ul {
   list-style-type: none;
   padding: 0;
-  margin: 0;
+  margin: 10%;
 }
 
 #messageslist > li {
-  background: linear-gradient(to top, #BC0CE8, #BC57E8);
+  background: linear-gradient(to top, #bc0ce8, #bc57e8);
   border: solid black 1px;
   border-radius: 5px;
-  width: auto;
   max-width: 70%;
+  margin-top: 2%;
   margin-bottom: 3%;
   padding: 1%;
-  box-shadow: 3px 5px #534CC4;
+  box-shadow: 3px 5px #534cc4;
 }
 
 .messages {
-  background: #6C63FF;
+  background: #6c63ff;
   overflow-y: scroll;
   grid-column: 1 / 4;
   grid-row: 2 / 3;
@@ -112,17 +117,20 @@ html, body {
 }
 
 .message {
-  background: #F9F9F9;
+  background: #f9f9f9;
   grid-column: 1 / 4;
   grid-row: 3 / 4;
   grid-template-columns: 1fr;
   margin: 0;
+  padding-top: 1.5%;
+  padding-bottom: 1.5%;
   border-top: solid black 1px;
+  display: flex;
+  justify-content: center;
 }
 
 .create_message {
-  grid-column: 1 / 2;
-  padding: 2%;
+  width: 90%;
   display: grid;
   grid-template-columns: 10% 75% 15%;
 }
@@ -130,8 +138,8 @@ html, body {
 #posttext {
   grid-column: 1 / 3;
   margin-right: 2%;
-  border-radius: 5px;
-  padding-left: 5px;
+  border-radius: 20px;
+  padding-left: 2%;
 }
 
 #submitbutton {

@@ -13,12 +13,10 @@ document.addEventListener("DOMContentLoaded", () => {
   let message = document.querySelector(".message");
   let login = document.querySelector(".loginbox");
 
-  console.log(storedName);
-  console.log(storedRoom);
-
   // On log in. Check to see if there is a user still logged in and whether they were in a room
   socket.on("connect", () => {
     if (!storedName && !storedRoom) {
+      console.log("no name and no room");
       localStorage.setItem("username", "");
       localStorage.setItem("currentroom", "");
       rooms.style.display = "none";
@@ -26,21 +24,25 @@ document.addEventListener("DOMContentLoaded", () => {
       message.style.display = "none";
       login.style.display = "grid";
     } else if (storedName && !storedRoom) {
+      console.log("name but no room");
       localStorage.setItem("currentroom", "");
       rooms.style.display = "block";
       messages.style.display = "block";
-      message.style.display = "block";
+      message.style.display = "flex";
       login.style.display = "none";
+      var roomhtml = document.getElementById("roomname");
+      roomhtml.innerHTML = `Please select a room`;
 
-      // Requests the list of available rooms
       socket.emit("room_list");
     } else {
+      console.log("name and room");
+      storedName = localStorage.getItem("username");
+      storedRoom = localStorage.getItem("currentroom");
       rooms.style.display = "block";
       messages.style.display = "block";
-      message.style.display = "block";
+      message.style.display = "flex";
       login.style.display = "none";
 
-      // Requests the list of available rooms
       socket.emit("room_list");
 
       socket.emit("choose_room", { room: storedRoom, user: storedName });
@@ -52,7 +54,16 @@ document.addEventListener("DOMContentLoaded", () => {
     e.preventDefault();
     const user = document.getElementById("username").value;
     localStorage.setItem("username", user);
-    socket.emit("submit username", { username: user });
+    //socket.emit("submit username", { username: user });
+    rooms.style.display = "block";
+    messages.style.display = "block";
+    message.style.display = "flex";
+    login.style.display = "none";
+    var roomhtml = document.getElementById("roomname");
+    roomhtml.innerHTML = `Please select a room`;
+    var list = document.getElementById("messageslist");
+    list = [];
+    socket.emit("room_list");
 
     const element = document.getElementById("username");
     element.value = "";
@@ -104,7 +115,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       rooms.style.display = "block";
       messages.style.display = "block";
-      message.style.display = "grid";
+      message.style.display = "flex";
       login.style.display = "none";
 
       const selected = localStorage.getItem("currentroom");
@@ -116,16 +127,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // When a user join a room
   socket.on("room_choice", data => {
-    console.log("entering room");
+    let storedName = localStorage.getItem("username");
+    console.log(storedName);
     const success = `${data.success}`;
     if (success == "true") {
       const newroom = `${data.roomname}`;
-      console.log(newroom);
 
       localStorage.setItem("currentroom", newroom);
 
       var roomhtml = document.getElementById("roomname");
-      roomhtml.innerHTML = newroom;
+      roomhtml.innerHTML = `${newroom} - ${storedName}`;
 
       var list = document.getElementById("messageslist");
       list.innerHTML = "";
@@ -158,6 +169,65 @@ document.addEventListener("DOMContentLoaded", () => {
       scroll.scrollTop = scroll.scrollHeight;
     }
   });
+
+  // Posting a message to the server
+  document.getElementById("submitpost").onclick = e => {
+    e.preventDefault();
+
+    const message = document.getElementById("posttext").value;
+    const user = localStorage.getItem("username");
+    const room = localStorage.getItem("currentroom");
+
+    var date = new Date();
+    let year = date.getFullYear();
+    let month = date.getMonth();
+    let day = date.getDate();
+    let hour = date.getHours();
+    let minutes = date.getMinutes();
+    let stringdate = `Time -  ${hour}:${minutes} Date - ${day}, ${month}, ${year}`;
+
+    socket.emit("submit message", {
+      message: message,
+      username: user,
+      roomdata: room,
+      timestamp: stringdate
+    });
+
+    const element = document.getElementById("posttext");
+    element.value = "";
+  };
+
+  // Recieving a message from the server
+  socket.on("announce message", data => {
+    const storedname = localStorage.getItem("username");
+    // If the {data.roomname} submitted from the server matches the roomname in localstorage then add the message to the bottom of the list
+    const li = document.createElement("li");
+    li.innerHTML = `<strong>${data.username}:</strong> <br> ${
+      data.message
+    } <br> <font size="0.8" color="#212121">${data.timestamp}</font>`;
+    var list = document.getElementById("messageslist");
+    if (data.username == storedname) {
+      li.style.background = "linear-gradient(to top, #FFBE0D, #FFBE4F)";
+      li.style.marginLeft = "30%";
+    }
+    list.append(li);
+    var scroll = document.querySelector(".messages");
+    scroll.scrollTop = scroll.scrollHeight;
+  });
+
+  // Logging the current user out
+  document.getElementById("logout").onclick = e => {
+    e.preventDefault();
+    localStorage.setItem("username", "");
+    localStorage.setItem("currentroom", "");
+
+    document.querySelector(".rooms").style.display = "none";
+    document.querySelector(".messages").style.display = "none";
+    document.querySelector(".message").style.display = "none";
+    document.querySelector(".loginbox").style.display = "grid";
+
+    location.reload();
+  };
 });
 
 /*

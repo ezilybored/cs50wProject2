@@ -1,75 +1,115 @@
-{% extends "layout.html" %}
-
-{% block title %}
-    The White Lodge
-{% endblock %}
-
-{% block main %}
+{% extends "layout.html" %} {% block title %} The White Lodge {% endblock %} {%
+block main %}
 <script src="{{ url_for('static', filename='socketpost.js') }}"></script>
 <div class="wrapper">
   <div class="loginbox">
-    <div id="heading"> The White Lodge Chat Rooms. </div>
+    <div id="heading">The White Lodge Chat Rooms.</div>
     <form id="login">
-        <label for="username">Enter your username</label>
-        <div>
-          <input id="username" autocomplete="off" autofocus class="form-control" placeholder="username" type="text" required/>
-        </div>
+      <label for="username">Enter your username</label>
       <div>
-          <button class="btn btn-secondary" id="submitname" type="submit">Submit</button>
+        <input
+          id="username"
+          autocomplete="off"
+          autofocus
+          class="form-control"
+          placeholder="username"
+          type="text"
+          required
+        />
+      </div>
+      <div>
+        <button class="btn btn-secondary" id="submitname" type="submit">
+          Submit
+        </button>
       </div>
     </form>
-    <img id ="loginimage" src="static/images/undraw_interaction_design_odgc.svg" alt="Login page image">
+    <img
+      id="loginimage"
+      src="static/images/undraw_interaction_design_odgc.svg"
+      alt="Login page image"
+    />
   </div>
 
   <div class="rooms">
     <nav class="navbar navbar-light navbar-expand-lg fixed-top">
-      <a href="#" class="navbar-brand">The White Lodge Chat Rooms <div id="roomname"> Please select a room </div></a>
-      <button class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
+      <a href="#" class="navbar-brand"
+        >The White Lodge Chat Rooms
+        <div id="roomname">Please select a room</div></a
+      >
+      <button
+        class="navbar-toggler"
+        data-toggle="collapse"
+        data-target="#navbarCollapse"
+      >
         <span class="navbar-toggler-icon"></span>
       </button>
-        <div class="collapse navbar-collapse" id="navbarCollapse">
-          <ul class="navbar-nav ml-auto">
-            <li class="navbar-item">
-              <form id="selectroom" class="form-inline my-2">
-                    <select class="form-control mr-2" id="roomlist">
-                      <!-- Options are inserted here by socketpost.js-->
-                      <option>Please select a room</option>
-                    </select>
-                  <button id="chooseroom" class="btn btn-secondary mr-2" type="submit">Submit</button>
+      <div class="collapse navbar-collapse" id="navbarCollapse">
+        <ul class="navbar-nav ml-auto">
+          <li class="navbar-item">
+            <form id="selectroom" class="form-inline my-2">
+              <select class="form-control mr-2" id="roomlist">
+                <!-- Options are inserted here by socketpost.js-->
+                <option>Please select a room</option>
+              </select>
+              <button
+                id="chooseroom"
+                class="btn btn-secondary mr-2"
+                data-toggle="collapse"
+                data-target="#navbarCollapse"
+                type="submit"
+              >
+                Submit
+              </button>
+            </form>
+          </li>
+          <li class="navbar-item">
+            <div class="createroom">
+              <form id="roomcreate" class="form-inline my-2">
+                <input
+                  id="newroom"
+                  autocomplete="off"
+                  class="form-control mr-2"
+                  placeholder="Create a new room"
+                  type="text"
+                />
+                <button id="submitroom" class="btn btn-secondary mr-2">
+                  Submit
+                </button>
               </form>
-            </li>
-            <li class="navbar-item">
-              <div class="createroom">
-                <form id="roomcreate" class="form-inline my-2">
-                      <input id="newroom" autocomplete="off" class="form-control mr-2" placeholder="Create a new room" type="text"/>
-                      <button id="submitroom" class="btn btn-secondary mr-2">Submit</button>
-                </form>
-              </div>
-            </li>
-            <li class="navbar-item my-2">
-              <button id="logout" class="btn btn-secondary mr-2" type="submit">Logout</button>
-            <li>
-          </ul>
-        </div>
+            </div>
+          </li>
+          <li class="navbar-item my-2">
+            <button id="logout" class="btn btn-secondary mr-2" type="submit">
+              Logout
+            </button>
+          </li>
+
+          <li></li>
+        </ul>
+      </div>
     </nav>
   </div>
 
-
   <div class="messages">
-    <ul id="messageslist">
-
-    </ul>
+    <ul id="messageslist"></ul>
   </div>
 
   <div class="message">
     <form class="create_message">
-        <input id="posttext" autocomplete="off" autofocus data-emojiable="true" placeholder="..." type="text" required/>
-        <button class="btn btn-secondary" id="submitpost" type="submit">
-          <i class="fas fa-paper-plane"></i>
-        </button>
+      <input
+        id="posttext"
+        autocomplete="off"
+        autofocus
+        data-emojiable="true"
+        placeholder="..."
+        type="text"
+        required
+      />
+      <button class="btn btn-secondary" id="submitpost" type="submit">
+        <i class="fas fa-paper-plane"></i>
+      </button>
     </form>
   </div>
-
 </div>
 
 {% endblock %}
